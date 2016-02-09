@@ -1,0 +1,11 @@
+commit c078652c8489bf23b85efdcacd6be368a2b60d35
+Author: Maryia Hryhoryeva <mash-grig@mail.ru>
+Date:   Tue Feb 9 15:34:23 2016 +0300
+
+    Add status.txt
+
+commit 1bc9f3f9c5ac7421e1060dc4ebe181174b37bc4f
+Author: Maryia Hryhoryeva <mash-grig@mail.ru>
+Date:   Tue Feb 9 15:23:45 2016 +0300
+
+    Add .gitignore
