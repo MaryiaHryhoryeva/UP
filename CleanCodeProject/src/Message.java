@@ -1,31 +1,39 @@
 
 
 public class Message implements Comparable<Message> {
-    private String id, author, message;
+    private String id;
+    private String author;
+    private String message;
     private Long timestamp;
-    private static int nextId=1;
+    private static int nextId = 1;
+
     public Message() {
-        id=Integer.toString(nextId++);
-        author="me";
-        timestamp=System.currentTimeMillis();
-        message="Hello!";
+        id = Integer.toString(nextId++);
+        author = "me";
+        timestamp = System.currentTimeMillis();
+        message = "Hello!";
     }
-    public Message(String author, String message){
-        this.author=author;
-        this.message=message;
-        this.id=Integer.toString(nextId++);
-        this.timestamp=System.currentTimeMillis();
+
+    public Message(String author, String message) {
+        this.author = author;
+        this.message = message;
+        this.id = Integer.toString(nextId++);
+        this.timestamp = System.currentTimeMillis();
     }
-    public String getId(){
+
+    public String getId() {
         return id;
     }
-    public String getAuthor(){
+
+    public String getAuthor() {
         return author;
     }
-    public String getMessage(){
+
+    public String getMessage() {
         return message;
     }
-    public Long getTimestamp(){
+
+    public Long getTimestamp() {
         return timestamp;
     }
 
@@ -36,6 +44,6 @@ public class Message implements Comparable<Message> {
 
     @Override
     public String toString() {
-        return id+" "+author+" "+timestamp+" "+message;
+        return id + " " + author + " " + timestamp + " " + message;
     }
 }

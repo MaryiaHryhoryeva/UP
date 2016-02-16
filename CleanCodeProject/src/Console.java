@@ -7,11 +7,20 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Console {
+
+    ArrayList<Message> arrayList;
+
     public Console() {
         arrayList = new ArrayList<>();
-        System.out.println("Hello! What do you want to do? \n add - add new message \n load - load history " +
-                "\n save - save history \n print - print history \n delete - delete message" +
-                "\n search - search by author \n search word - search by key-word \n exit - close program");
+        System.out.println("Hello! What do you want to do? " +
+                "\n add - add new message " +
+                "\n load - load history " +
+                "\n save - save history " +
+                "\n print - print history " +
+                "\n delete - delete message" +
+                "\n search author - search by author " +
+                "\n search word - search by key-word " +
+                "\n exit - close program");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String answer = scanner.nextLine();
@@ -31,8 +40,8 @@ public class Console {
                 case "delete":
                     delete();
                     break;
-                case "search":
-                    search();
+                case "search author":
+                    searchAuthor();
                     break;
                 case "search word":
                     searchWord();
@@ -46,17 +55,13 @@ public class Console {
             }
         }
     }
-    ArrayList<Message> arrayList;
-    public static void main(String[] args) {
-        new Console();
-    }
 
     private void add() {
         System.out.println("Enter author and message");
         Scanner scanner = new Scanner(System.in);
         String author = scanner.nextLine();
         String message = scanner.nextLine();
-        Message m = new Message(author,message);
+        Message m = new Message(author, message);
         arrayList.add(m);
         System.out.println("Added.");
     }
@@ -65,27 +70,27 @@ public class Console {
         System.out.println("Enter id");
         Scanner scanner = new Scanner(System.in);
         String id = scanner.next();
-        int n=arrayList.size();
-        for (int i=0; i<arrayList.size();i++){
-            if (arrayList.get(i).getId().equals(id)){
+        int n = arrayList.size();
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (arrayList.get(i).getId().equals(id)) {
                 arrayList.remove(i);
                 System.out.println("Deleted.");
             }
         }
-        if(arrayList.size()==n)
+        if (arrayList.size() == n) {
             System.out.println("id not found");
+        }
     }
 
     private void load() {
-        try{
+        try {
             Reader reader = new InputStreamReader(new FileInputStream("log.txt"));
             Gson gson = new GsonBuilder().create();
             Message[] m = gson.fromJson(reader, Message[].class);
             arrayList.clear();
-            Collections.addAll(arrayList,m);
+            Collections.addAll(arrayList, m);
             System.out.println("Loaded.");
-        }
-        catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
     }
@@ -97,43 +102,44 @@ public class Console {
             gson.toJson(arrayList, fw);
             fw.close();
             System.out.println("Saved");
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Save error");
         }
     }
 
-    private void search() {
+    private void searchAuthor() {
         System.out.println("Enter author");
         Scanner scanner = new Scanner(System.in);
-        String author = scanner.next();
-        boolean flag=false;
-        for (Message m: arrayList){
-            if(m.getAuthor().equals(author)){
+        String author = scanner.nextLine();
+        boolean flag = false;
+        for (Message m : arrayList) {
+            if (m.getAuthor().equals(author)) {
                 System.out.println(m);
-                flag=true;
+                flag = true;
             }
         }
-        if (flag==false)
+        if (!flag) {
             System.out.println("Author not found");
+        }
     }
 
     private void searchWord() {
         System.out.println("Enter word(phrase)");
         Scanner scanner = new Scanner(System.in);
         String text = scanner.next();
-        boolean flag=false;
-        for (Message m: arrayList){
-            if(m.getMessage().contains(text)){
+        boolean flag = false;
+        for (Message m : arrayList) {
+            if (m.getMessage().contains(text)) {
                 System.out.println(m);
-                flag=true;
+                flag = true;
             }
         }
-        if (flag==false)
+        if (!flag) {
             System.out.println("Word not found");
+        }
     }
 
     private void print() {
-            System.out.println(arrayList);
+        System.out.println(arrayList);
     }
 }
