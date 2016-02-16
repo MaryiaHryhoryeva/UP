@@ -1,4 +1,4 @@
-
+package maryiahryhoryeva.consoleapp;
 
 public class Message implements Comparable<Message> {
     private String id;
