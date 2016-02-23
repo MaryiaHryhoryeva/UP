@@ -23,8 +23,14 @@ public class Console {
                 "\n search author - search by author " +
                 "\n search word - search by key-word " +
                 "\n exit - close program");
+        functional();
+
+    }
+
+    private void functional(){
         Scanner scanner = new Scanner(System.in);
-        while (true) {
+        boolean flag = true;
+        while (flag) {
             String answer = scanner.nextLine();
             switch (answer) {
                 case "add":
@@ -49,13 +55,16 @@ public class Console {
                     searchWord();
                     break;
                 case "exit":
-                    System.exit(0);
+                    flag = false;
                     break;
                 default:
                     System.out.println("Error");
                     break;
             }
         }
+        scanner.close();
+        System.exit(0);
+
     }
 
     private void add() {
@@ -82,6 +91,7 @@ public class Console {
         if (arrayList.size() == n) {
             System.out.println("id not found");
         }
+        scanner.close();
     }
 
     private void load() {
@@ -91,9 +101,12 @@ public class Console {
             Message[] m = gson.fromJson(reader, Message[].class);
             arrayList.clear();
             Collections.addAll(arrayList, m);
+            reader.close();
             System.out.println("Loaded.");
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Reader not closed");
         }
     }
 
@@ -123,6 +136,7 @@ public class Console {
         if (!flag) {
             System.out.println("Author not found");
         }
+        scanner.close();
     }
 
     private void searchWord() {
@@ -139,6 +153,7 @@ public class Console {
         if (!flag) {
             System.out.println("Word not found");
         }
+        scanner.close();
     }
 
     private void print() {
