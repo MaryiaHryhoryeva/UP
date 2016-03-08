@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <title>Chat</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <script src="scripts.js"></script>
 </head>
 <body >
     <div id="header">
         <div class="up">
             <div class="friend">
                 Friend
-                <button id="deletebutton" type="button" class="button">Delete</button>
+                <button id="deletebutton" onclick="deleted()" type="button" class="button">Delete</button>
             </div>
         </div>
     </div>
@@ -32,7 +34,7 @@
     <div id="footer">
         <div class="send">
             <input id="message" type="text" class="mestext" placeholder="Type a message...">
-            <button id="sendbutton" type="button" class="button">Send</button>
+            <button id="sendbutton" onclick="send()" type="button" class="button">Send</button>
         </div>
     </div>
 </body>

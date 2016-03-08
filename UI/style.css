@@ -40,7 +40,11 @@ html, body {
     outline: 0;
 }
 
-#header #deletebutton:active {
+/*#header #deletebutton:active {
+    background: #E1B5FF;
+}*/
+
+#header #deletebutton .choose {
     background: #E1B5FF;
 }
 
