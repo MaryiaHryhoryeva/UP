@@ -5,8 +5,6 @@ html, body {
     margin: auto;
 }
 
-
-
 #header {
     margin: auto;
     margin-top: 1%;
@@ -23,7 +21,7 @@ html, body {
     font-size: medium;
     padding: 2%;
     color: darkgrey;
-    font-family:  Arial;
+    font-family: Arial;
 }
 
 #header #deletebutton {
@@ -32,17 +30,13 @@ html, body {
     background-color: lavender;
     height: 25px;
     text-shadow: lightgray;
-    font-family:  Arial;
+    font-family: Arial;
     float: right;
 }
 
 #header #deletebutton:focus {
     outline: 0;
 }
-
-/*#header #deletebutton:active {
-    background: #E1B5FF;
-}*/
 
 #header #deletebutton .choose {
     background: #E1B5FF;
@@ -77,16 +71,16 @@ html, body {
     font-family: Arial;
 }
 
-
 #footer #sendbutton {
     border: 1px gainsboro solid;
     border-radius: 5px;
     background-color: lavender;
     height: 25px;
     text-shadow: lightgray;
-    font-family:  Arial;
+    font-family: Arial;
     float: right;
 }
+
 #footer #sendbutton:focus {
     outline: 0;
 }
@@ -104,41 +98,52 @@ html, body {
     border: 1px gainsboro solid;
     box-shadow: 0 0 5px gainsboro;
 }
- .you {
+
+.you {
     width: 50%;
     background-color: #FFF7F2;
     padding: 2%;
-     float: left;
-     margin: 2%;
-     border-radius: 5px;
+    float: left;
+    margin: 2%;
+    border-radius: 5px;
+    word-wrap: break-word;
 }
 
- .you:active{
+.you:active {
     background-color: #ffd8bf;
- }
+}
 
+.me {
+    width: 50%;
+    background-color: #F3E9FC;
+    padding: 2%;
+    float: right;
+    margin: 2%;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
 
- .me {
-     width: 50%;
-     background-color:#F3E9FC;
-     padding: 2%;
-     float: right;
-     margin: 2%;
-     border-radius: 5px;
- }
+.me:active {
+    background-color: #DBBCF6;
+}
 
- .me:active {
-     background-color: #DBBCF6;
- }
+.choose {
+    background-color: #DBBCF6;
+}
 
 .error {
     width: 40%;
     padding: 2%;
     margin: auto;
+    color: red;
 }
 
 .delete {
     width: 20%;
     padding: 2%;
     margin: auto;
+}
+
+#deletebutton {
+    visibility: hidden;
 }
