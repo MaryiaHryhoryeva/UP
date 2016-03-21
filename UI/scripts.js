@@ -1,81 +1,116 @@
-var mesId = 0;
 var chosen = false;
 var chosenId;
-var message = [];
+var messages = [];
 
-function run(){
-    message = loadMessage();
-
+function run() {
+    messages = loadMessages() || [
+            newMessage(true, "Hi!"),
+            newMessage(false, "Hello!"),
+            newMessage(true, "Bye.")
+        ];
+    render(messages);
 }
 
-function newMessage(username, text){
+function newMessage(me, text) {
     return {
-        "username": username,
+        "me": me,
         "text": text,
-        "id": "" + uniqId(),
-        "deleted": false,
+        "id": "" + uniqueId(),
+        "deleted": false
     }
 }
 
-function loadMessage(){
+function loadMessages() {
+    if (typeof(Storage) == "undefined") {
+        alert('localStorage is not accessible');
+        return;
+    }
 
+    var item = localStorage.getItem("messages");
+    return item && JSON.parse(item);
 }
 
-function uniqId(){
+function saveMessages() {
+    if(typeof(Storage) == "undefined") {
+        alert('localStorage is not accessible');
+        return;
+    }
+
+    localStorage.setItem("messages", JSON.stringify(messages));
+}
+
+function uniqueId() {
     var date = Date.now();
     var random = Math.random() * Math.random();
 
-    return Math.floor(date*random);
+    return Math.floor(date * random);
 }
 
-function setDefaultMessages(){
-    return [
-        newMessage("Me","Hi"),
-        newMessage("Me","meow"),
-        newMessage("Me","rrrr"),
-    ]
+function clearChatSpace() {
+    var chat = document.getElementById("chat");
+    chat.innerHTML = "<div class='error'>Server/network error.</div>";
 }
-function render(message){
-    for (var i =0; i<message.length; i++) {
-        renderMessage(message[i]);
+
+function render(messages) {
+    clearChatSpace();
+    for (var i = 0; i < messages.length; i++) {
+        renderMessage(messages[i]);
     }
 }
 
-
+function renderMessage(message) {
+    var msg = document.createElement('div');
+    msg.id = message.id;
+    if (message.deleted) {
+        msg.classList.add('delete');
+        msg.innerHTML = 'Deleted.';
+    } else {
+        msg.appendChild(document.createTextNode(message.text));
+        if (message.me) {
+            msg.classList.add('me');
+            msg.setAttribute("onclick", "active(" + ("" + message.id) + ")");
+        } else {
+            msg.classList.add('you');
+        }
+    }
+    document.getElementById("chat").appendChild(msg);
+}
 
 function send() {
-    var message = document.createElement('div');
-    message.classList.add('me');
-    message.id = 'm' + mesId;
-    message.setAttribute("onclick", "active(" + mesId + ")");
-    var text = document.getElementById("message").value;
-    message.appendChild(document.createTextNode(text));
-    document.getElementById("chat").appendChild(message);
+    var newText = document.getElementById("message").value;
+    if (newText.length == 0)
+        return;
+    var message = newMessage(true, newText);
+    messages.push(message);
+    saveMessages();
+    renderMessage(message);
     document.getElementById("message").value = "";
-    mesId++;
 }
 
 function active(id) {
     if (chosen && chosenId == id) {
-        document.getElementById('m' + chosenId).classList.remove('choose');
+        document.getElementById('' + chosenId).classList.remove('choose');
         chosen = false;
         document.getElementById('deletebutton').style.visibility = 'hidden';
     } else if (!chosen) {
         chosenId = id;
-        document.getElementById('m' + id).classList.add('choose');
+        document.getElementById('' + id).classList.add('choose');
         chosen = true;
         document.getElementById('deletebutton').style.visibility = 'visible';
     }
 }
 
 function deleted() {
-    var to_delete = document.getElementById('m' + chosenId);
-    to_delete.classList.remove('me', 'choose');
-    to_delete.classList.add('delete');
-    to_delete.innerHTML = 'Deleted.';
-    to_delete.removeAttribute("onclick");
-    chosen = false;
-    chosenId = "";
-    document.getElementById('deletebutton').style.visibility = 'hidden';
+    for (var i=0; i<messages.length; i++) {
+        if (messages[i].id == chosenId) {
+            messages[i].deleted = true;
+            saveMessages();
+            chosen = false;
+            chosenId = "";
+            document.getElementById('deletebutton').style.visibility = 'hidden';
+            render(messages);
+            return;
+        }
+    }
 }
 
