@@ -1,6 +1,47 @@
 var mesId = 0;
 var chosen = false;
 var chosenId;
+var message = [];
+
+function run(){
+    message = loadMessage();
+
+}
+
+function newMessage(username, text){
+    return {
+        "username": username,
+        "text": text,
+        "id": "" + uniqId(),
+        "deleted": false,
+    }
+}
+
+function loadMessage(){
+
+}
+
+function uniqId(){
+    var date = Date.now();
+    var random = Math.random() * Math.random();
+
+    return Math.floor(date*random);
+}
+
+function setDefaultMessages(){
+    return [
+        newMessage("Me","Hi"),
+        newMessage("Me","meow"),
+        newMessage("Me","rrrr"),
+    ]
+}
+function render(message){
+    for (var i =0; i<message.length; i++) {
+        renderMessage(message[i]);
+    }
+}
+
+
 
 function send() {
     var message = document.createElement('div');
