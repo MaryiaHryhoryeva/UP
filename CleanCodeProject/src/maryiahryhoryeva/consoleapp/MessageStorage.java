@@ -17,7 +17,7 @@ public class MessageStorage {
     public MessageStorage() {
         arrayList = new ArrayList<>();
         load();
-        System.out.println("Hello! What do you want to do? " +
+        /*System.out.println("Hello! What do you want to do? " +
                 "\n add - add new message " +
                 "\n load - load history " +
                 "\n save - save history " +
@@ -27,7 +27,7 @@ public class MessageStorage {
                 "\n search word - search by key-word " +
                 "\n exit - close program");
 
-        functional();
+        functional();*/
 
     }
 
@@ -107,8 +107,12 @@ public class MessageStorage {
         return arrayList.size();
     }
 
-    public List<Message> getPortion(int number) {
-        return arrayList;
+    public List<Message> getPortion(int index) {
+        ArrayList<Message> arrayListToView = new ArrayList<>();
+        for (int i = index; i < arrayList.size(); i++) {
+            arrayListToView.add(arrayList.get(i));
+        }
+        return arrayListToView;
     }
 
     public void delete(String id) {

@@ -2,12 +2,10 @@ package by.bsu.up.chat.server;
 
 import by.bsu.up.chat.Constants;
 import by.bsu.up.chat.InvalidTokenException;
-import by.bsu.up.chat.common.models.Message;
+import maryiahryhoryeva.consoleapp.Message;
 import by.bsu.up.chat.logging.Logger;
 import by.bsu.up.chat.logging.impl.Log;
-import by.bsu.up.chat.storage.InMemoryMessageStorage;
-import by.bsu.up.chat.storage.MessageStorage;
-import by.bsu.up.chat.storage.Portion;
+import maryiahryhoryeva.consoleapp.MessageStorage;
 import by.bsu.up.chat.utils.MessageHelper;
 import by.bsu.up.chat.utils.StringUtils;
 import com.sun.net.httpserver.Headers;
@@ -27,7 +25,7 @@ public class ServerHandler implements HttpHandler {
 
     private static final Logger logger = Log.create(ServerHandler.class);
 
-    private MessageStorage messageStorage = new InMemoryMessageStorage();
+    private MessageStorage messageStorage = new MessageStorage();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -80,8 +78,7 @@ public class ServerHandler implements HttpHandler {
                 return Response.badRequest(
                         String.format("Incorrect token in request: %s. Server does not have so many messages", token));
             }
-            Portion portion = new Portion(index);
-            List<Message> messages = messageStorage.getPortion(portion);
+            List<Message> messages = messageStorage.getPortion(index);
             String responseBody = MessageHelper.buildServerResponseBody(messages, messageStorage.size());
             return Response.ok(responseBody);
         } catch (InvalidTokenException e) {
@@ -93,7 +90,7 @@ public class ServerHandler implements HttpHandler {
         try {
             Message message = MessageHelper.getClientMessage(httpExchange.getRequestBody());
             logger.info(String.format("Received new message from user: %s", message));
-            messageStorage.addMessage(message);
+            messageStorage.add(message);
             return Response.ok();
         } catch (ParseException e) {
             logger.error("Could not parse message.", e);
@@ -106,7 +103,21 @@ public class ServerHandler implements HttpHandler {
     }
 
     private Response doDelete(HttpExchange httpExchange) {
-        return Response.withCode(Constants.RESPONSE_CODE_NOT_IMPLEMENTED);
+        String query = httpExchange.getRequestURI().getQuery();
+        if (query == null) {
+            return Response.badRequest("Absent query in request");
+        }
+        Map<String, String> map = queryToMap(query);
+        String id = map.get(Constants.REQUEST_PARAM_MESSAGE_ID);
+        if (StringUtils.isEmpty(id)) {
+            return Response.badRequest("Token query parameter is required");
+        }
+        try {
+            messageStorage.delete(id);
+            return Response.ok();
+        } catch (InvalidTokenException e) {
+            return Response.badRequest(e.getMessage());
+        }
     }
 
     private Response doOptions(HttpExchange httpExchange) {

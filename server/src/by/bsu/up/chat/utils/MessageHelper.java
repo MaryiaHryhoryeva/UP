@@ -2,7 +2,7 @@ package by.bsu.up.chat.utils;
 
 import by.bsu.up.chat.Constants;
 import by.bsu.up.chat.InvalidTokenException;
-import by.bsu.up.chat.common.models.Message;
+import maryiahryhoryeva.consoleapp.Message;
 import by.bsu.up.chat.logging.Logger;
 import by.bsu.up.chat.logging.impl.Log;
 import jdk.nashorn.internal.ir.debug.JSONWriter;
@@ -117,11 +117,13 @@ public class MessageHelper {
         String author = ((String) jsonObject.get(Constants.Message.FIELD_AUTHOR));
         long timestamp = ((long) jsonObject.get(Constants.Message.FIELD_TIMESTAMP));
         String text = ((String) jsonObject.get(Constants.Message.FIELD_TEXT));
+        boolean deleted = jsonObject.get(Constants.Message.FIELD_DELETED).equals("true");
         Message message = new Message();
         message.setId(id);
         message.setAuthor(author);
         message.setTimestamp(timestamp);
         message.setText(text);
+        message.setDeleted(deleted);
         return message;
     }
 
@@ -150,6 +152,7 @@ public class MessageHelper {
         jsonObject.put(Constants.Message.FIELD_AUTHOR, message.getAuthor());
         jsonObject.put(Constants.Message.FIELD_TIMESTAMP, message.getTimestamp());
         jsonObject.put(Constants.Message.FIELD_TEXT, message.getText());
+        jsonObject.put(Constants.Message.FIELD_DELETED, message.isDeleted());
         return jsonObject;
     }
 }
