@@ -6,14 +6,17 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
-public class Console {
+public class MessageStorage {
 
     ArrayList<Message> arrayList;
+    private static final String FILE_NAME = "file.json";
 
-    public Console() {
+    public MessageStorage() {
         arrayList = new ArrayList<>();
+        load();
         System.out.println("Hello! What do you want to do? " +
                 "\n add - add new message " +
                 "\n load - load history " +
@@ -23,6 +26,7 @@ public class Console {
                 "\n search author - search by author " +
                 "\n search word - search by key-word " +
                 "\n exit - close program");
+
         functional();
 
     }
@@ -77,6 +81,11 @@ public class Console {
         System.out.println("Added.");
     }
 
+    public void add(Message message) {
+        arrayList.add(message);
+        save();
+    }
+
     private void delete() {
         System.out.println("Enter id");
         Scanner scanner = new Scanner(System.in);
@@ -94,9 +103,26 @@ public class Console {
         scanner.close();
     }
 
+    public int size() {
+        return arrayList.size();
+    }
+
+    public List<Message> getPortion(int number) {
+        return arrayList;
+    }
+
+    public void delete(String id) {
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (arrayList.get(i).getId().equals(id)) {
+                arrayList.get(i).setDeleted(true);
+            }
+        }
+        save();
+    }
+
     private void load() {
         try {
-            Reader reader = new InputStreamReader(new FileInputStream("log.txt"));
+            Reader reader = new InputStreamReader(new FileInputStream(FILE_NAME));
             Gson gson = new GsonBuilder().create();
             Message[] m = gson.fromJson(reader, Message[].class);
             arrayList.clear();
@@ -113,7 +139,7 @@ public class Console {
     private void save() {
         try {
             Gson gson = new GsonBuilder().create();
-            FileWriter fw = new FileWriter("output.txt");
+            FileWriter fw = new FileWriter(FILE_NAME);
             gson.toJson(arrayList, fw);
             fw.close();
             System.out.println("Saved");
@@ -145,7 +171,7 @@ public class Console {
         String text = scanner.next();
         boolean flag = false;
         for (Message m : arrayList) {
-            if (m.getMessage().contains(text)) {
+            if (m.getText().contains(text)) {
                 System.out.println(m);
                 flag = true;
             }
@@ -155,6 +181,8 @@ public class Console {
         }
         scanner.close();
     }
+
+
 
     private void print() {
         System.out.println(arrayList);
