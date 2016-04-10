@@ -1,5 +1,5 @@
 var isConnected = void 0;
-var serverUrl = 'http://localhost:1555/todos?token=TN11EN';
+var serverUrl = 'http://localhost:999/chat?token=TN11EN';
 
 function About() {
 	alert('Server JSON Viewer\nПоказывает серверный ответ\nExadel @ 2016');
@@ -10,7 +10,7 @@ function Run() {
 }
 
 function Help() {
-	var help = 'Start server at localhost:1555\nExpected URL is ' + serverUrl;
+	var help = 'Start server at localhost:999\nExpected URL is ' + serverUrl;
 
 	setOutput(help);
 }
