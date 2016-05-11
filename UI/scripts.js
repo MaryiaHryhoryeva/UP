@@ -1,3 +1,4 @@
+'use strict';
 var chosen = false;
 var chosenId;
 var messages = [];
@@ -10,6 +11,13 @@ function run() {
         ];
     render(messages);
 }
+
+var Application = {
+    mainUrl : "http://127.0.1.1:1555/chat",
+    messages : [],
+    token : "TN11EN",
+    author : ""
+};
 
 function newMessage(me, text) {
     return {
